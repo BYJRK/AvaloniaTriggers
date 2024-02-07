@@ -1,0 +1,109 @@
+﻿<Window x:Class="AvaloniaTriggers.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AvaloniaTriggers.WPF"
+        xmlns:shared="clr-namespace:AvaloniaTriggers.Shared;assembly=AvaloniaTriggers.Shared"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        Title="MainWindow"
+        Width="800"
+        Height="600"
+        mc:Ignorable="d">
+    <Window.DataContext>
+        <shared:MainViewModel />
+    </Window.DataContext>
+    <StackPanel Margin="10" VerticalAlignment="Center">
+        <StackPanel.Resources>
+            <Style TargetType="Rectangle">
+                <Setter Property="Width" Value="200" />
+                <Setter Property="Height" Value="120" />
+                <Setter Property="Fill" Value="LightGreen" />
+            </Style>
+        </StackPanel.Resources>
+        <!-- Trigger -->
+        <Rectangle>
+            <Rectangle.Style>
+                <Style TargetType="Rectangle" BasedOn="{StaticResource {x:Type Rectangle}}">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Fill" Value="Coral" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Rectangle.Style>
+        </Rectangle>
+        <!-- EventTrigger -->
+        <Rectangle Margin="0,10,0,0">
+            <Rectangle.Style>
+                <Style TargetType="Rectangle" BasedOn="{StaticResource {x:Type Rectangle}}">
+                    <Style.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetProperty="(Rectangle.Fill).(SolidColorBrush.Color)" To="Coral" Duration="0:0:0.35" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetProperty="(Rectangle.Fill).(SolidColorBrush.Color)" To="LightGreen" Duration="0:0:0.35" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Rectangle.Style>
+        </Rectangle>
+        <!-- DataTrigger -->
+        <Rectangle Margin="0,10,0,0">
+            <Rectangle.Style>
+                <Style TargetType="Rectangle" BasedOn="{StaticResource {x:Type Rectangle}}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Flag}" Value="True">
+                            <!--<DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetProperty="(Rectangle.Fill).(SolidColorBrush.Color)" To="Coral" Duration="0:0:0.35" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetProperty="(Rectangle.Fill).(SolidColorBrush.Color)" To="LightGreen" Duration="0:0:0.35" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>-->
+                            <Setter Property="Fill" Value="Coral" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Rectangle.Style>
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="MouseUp">
+                    <b:InvokeCommandAction Command="{Binding ToggleFlagCommand}" />
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+        </Rectangle>
+        <!-- MultiTrigger -->
+        <ToggleButton Width="200" Height="120" Margin="0,10,0,0">
+            <ToggleButton.Style>
+                <Style TargetType="ToggleButton">
+                    <Setter Property="Background" Value="LightGreen" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Style.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="IsChecked" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="BorderThickness" Value="6" />
+                        </MultiTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ToggleButton.Style>
+        </ToggleButton>
+    </StackPanel>
+</Window>

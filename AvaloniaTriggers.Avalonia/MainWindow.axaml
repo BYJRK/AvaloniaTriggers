@@ -1,0 +1,86 @@
+<Window x:Class="AvaloniaTriggers.Avalonia.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:shared="using:AvaloniaTriggers.Shared"
+        Title="AvaloniaTriggers.Avalonia"
+        Width="800"
+        Height="600"
+        x:DataType="shared:MainViewModel"
+        mc:Ignorable="d">
+    <Window.DataContext>
+        <shared:MainViewModel />
+    </Window.DataContext>
+    <StackPanel VerticalAlignment="Center" Spacing="10">
+        <StackPanel.Styles>
+            <Style Selector="Rectangle">
+                <Setter Property="Fill" Value="LightGreen" />
+                <Setter Property="Width" Value="200" />
+                <Setter Property="Height" Value="120" />
+            </Style>
+        </StackPanel.Styles>
+        <!-- Trigger -->
+        <Rectangle>
+            <Rectangle.Styles>
+                <Style Selector="Rectangle:pointerover">
+                    <Setter Property="Fill" Value="Coral" />
+                </Style>
+            </Rectangle.Styles>
+        </Rectangle>
+        <!-- EventTrigger -->
+        <Rectangle>
+            <Rectangle.Styles>
+                <Style Selector="Rectangle:pointerover">
+                    <Setter Property="Fill" Value="Coral" />
+                    <!--<Style.Animations>
+                        <Animation Duration="0:0:0.35">
+                            <KeyFrame Cue="0%">
+                                <Setter Property="Fill" Value="LightGreen" />
+                            </KeyFrame>
+                            <KeyFrame Cue="100%">
+                                <Setter Property="Fill" Value="Coral" />
+                            </KeyFrame>
+                        </Animation>
+                    </Style.Animations>-->
+                </Style>
+            </Rectangle.Styles>
+            <Rectangle.Transitions>
+                <Transitions>
+                    <BrushTransition Property="Fill" Duration="0:0:0.35" />
+                </Transitions>
+            </Rectangle.Transitions>
+        </Rectangle>
+        <!-- DataTrigger -->
+        <Rectangle Classes.flag="{Binding Flag}">
+            <Rectangle.Styles>
+                <Style Selector="Rectangle.flag">
+                    <Setter Property="Fill" Value="Coral" />
+                </Style>
+            </Rectangle.Styles>
+            <Interaction.Behaviors>
+                <EventTriggerBehavior EventName="PointerPressed">
+                    <InvokeCommandAction Command="{Binding ToggleFlag}" />
+                </EventTriggerBehavior>
+            </Interaction.Behaviors>
+        </Rectangle>
+        <!-- MultiTrigger -->
+        <ToggleButton>
+            <ToggleButton.Styles>
+                <Style Selector="ToggleButton">
+                    <Setter Property="Width" Value="200" />
+                    <Setter Property="Height" Value="120" />
+                    <Setter Property="Background" Value="LightGreen" />
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="BorderThickness" Value="0" />
+                </Style>
+                <Style Selector="ToggleButton[IsChecked=True]:pointerover">
+                    <Setter Property="BorderThickness" Value="6" />
+                </Style>
+                <Style Selector="ToggleButton[IsChecked=True]:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="BorderBrush" Value="Coral" />
+                </Style>
+            </ToggleButton.Styles>
+        </ToggleButton>
+    </StackPanel>
+</Window>
